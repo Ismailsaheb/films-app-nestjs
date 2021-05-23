@@ -1,0 +1,41 @@
+version: "3.1"
+services:
+  films-app-nestjs:
+    container_name: films-app-nestjs
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "8081:5000"
+      - "9229:9229"
+    command: npm run start:debug
+    networks:
+      - webnet
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - JWT_SECRET=12345678
+  postgres:
+    image: postgres:12.6
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    networks:
+      - webnet
+    volumes:
+      - api-db:/var/lib/postgresql/data
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+networks:
+  webnet:
+volumes:
+  api-db:
