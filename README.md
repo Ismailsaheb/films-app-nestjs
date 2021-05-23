@@ -1,12 +1,12 @@
 ## Description
-Films backend Services over Reactive Observables using Nest.js as per the document attached [ Backend Test (Java).docx ]
+Films Reactive Observable Backend Services using Nest.js as per the document attached [ Backend Test (Java).docx ]
 
 ## Features
 * Add Films
-* list out Films added
+* List out Films added
 * Oauth2 Jwt Authentication using passport
 * Nestjs as back-end
-* Postgres as the database
+* Postgres as the database using docker image
 * Multi-stage docker file for local development and production deployment
 
 ## Running the code
@@ -20,7 +20,8 @@ on [http://localhost:8081](http://localhost:8081)
 * The codebase is ready for hot reloading as you make changes to the codebase since docker volumes 
   are being used
   
-films data will be pushed from db\Initdb.d\films.sql to postgres db on container creation. If you are getting errors about database you can drop table and run the films.sql script manually connecting postgrese socker container.
+Films data will be pushed from `db\Initdb.d\films.sql` to postgres db on container creation. If you are getting errors about database you can drop table and run the films.sql script manually connecting postgres DB in Docker container  `#psql -U postgres`.
+
 
 # REST API
 
@@ -31,12 +32,12 @@ The REST API to the films app is described below.
 
 `POST /users/`
 
-curl --location --request POST 'http://localhost:8081/users' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "email": "ismail@gmail.com",
-    "password": "123455"
-}'
+      curl --location --request POST 'http://localhost:8081/users' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+      "email": "ismail@gmail.com",
+      "password": "123455"
+     }'
 
 ### Response
 
@@ -60,8 +61,8 @@ curl --location --request POST 'http://localhost:8081/users' \
 
 `GET /users/`
 
-   curl --location --request GET 'http://localhost:8081/users' \
---header 'Content-Type: application/json'
+    curl --location --request GET 'http://localhost:8081/users' \
+    --header 'Content-Type: application/json'
 
 ### Response
 
@@ -78,8 +79,8 @@ curl --location --request POST 'http://localhost:8081/users' \
 
 `GET /user/id`
 
-    ccurl --location --request GET 'http://localhost:8081/users/1' \
---header 'Content-Type: application/json'
+    curl --location --request GET 'http://localhost:8081/users/1' \
+    --header 'Content-Type: application/json'
 
 ### Response
 
@@ -103,7 +104,7 @@ curl --location --request POST 'http://localhost:8081/users' \
 `GET /users/id`
 
     curl --location --request GET 'http://localhost:8081/users/1333' \
---header 'Content-Type: application/json'
+    --header 'Content-Type: application/json'
 
 ### Response
 
@@ -122,11 +123,11 @@ curl --location --request POST 'http://localhost:8081/users' \
 `POST /auth/`
 
     curl --location --request POST 'http://localhost:8081/auth' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "email":"ismail@gmail.com",
-  "password":"123455"
-}'
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+    "email":"ismail@gmail.com",
+     "password":"123455"
+    }'
 
 ### Response
 
@@ -134,10 +135,12 @@ curl --location --request POST 'http://localhost:8081/users' \
     Status: 201 Created
     Connection: close
     Content-Type: application/json
-    Location: /thing/1
+    Location: /auth
     Content-Length: 36
 
     {"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYyMTgwODI4M30.krccRs6jXyU_bjLN0sJeDGdVTCgX4S3fMI-wC40moro"}
+    
+    
 
 ## Create a new Film required Authorization bearer token to create film
 
@@ -145,19 +148,19 @@ curl --location --request POST 'http://localhost:8081/users' \
 
 `POST /films/`
 
-curl --location --request POST 'http://localhost:8081/films' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYyMTgwMDA4NX0.t37yJFO_1Zs7oMLHcFsy2IGC-YQwm20OkVD5QzFSs2E' \
---data-raw '{
-  "name": "KingKong",
-  "description": "fiction",
-  "rating": "3",
-  "ticketPrice": "23",
-  "country": "USA",
-  "releaseDate": "2012-04-23",
-  "genre": "FICTION",
-  "photo": "asasasaasas"
-}'
+    curl --location --request POST 'http://localhost:8081/films' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYyMTgwMDA4NX0.t37yJFO_1Zs7oMLHcFsy2IGC-YQwm20OkVD5QzFSs2E' \
+    --data-raw '{
+      "name": "KingKong",
+      "description": "fiction",
+      "rating": "3",
+      "ticketPrice": "23",
+      "country": "USA",
+      "releaseDate": "2012-04-23",
+      "genre": "FICTION",
+      "photo": "asasasaasas"
+    }'
 
 ### Response
 
@@ -176,7 +179,7 @@ curl --location --request POST 'http://localhost:8081/films' \
 
 `GET /films/`
 
-  curl --location --request GET 'http://localhost:8081/films'
+    curl --location --request GET 'http://localhost:8081/films'
 
 ### Response
 
